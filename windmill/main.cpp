@@ -1,0 +1,124 @@
+#include <iostream>
+#include<GL/gl.h>
+#include <GL/glut.h>
+#include <windows.h>
+#include <cmath>
+
+using namespace std;
+
+float angle = 0.0f;
+
+void circle(float radius, float xc, float yc, float r, float g, float b)
+{
+	glBegin(GL_POLYGON);
+	for (int i = 0; i < 200; i++)
+	{
+		glColor3ub(r, g, b);
+		float pi = 3.1416;
+		float A = (i * 2 * pi) / 200;
+		float r = radius;
+		float x = r * cos(A);
+		float y = r * sin(A);
+		glVertex2f(x + xc, y + yc);
+	}
+	glEnd();
+}
+
+void blades()
+{
+	circle(2, 0, 0, 0, 0, 0);
+	circle(0.27, 0, 0, 255, 255, 255);
+
+	glLineWidth(7.0);
+	glBegin(GL_LINES);
+	glColor3ub(255, 255, 255);
+	glVertex2f(0.0, 0.0);
+	glVertex2f(2, 0);
+	glEnd();
+
+	glLineWidth(5.0);
+	glBegin(GL_LINES);
+	glColor3ub(255, 255, 255);
+	glVertex2f(0.0, 0.0);
+	glVertex2f(0, -2);
+	glEnd();
+
+	glLineWidth(5.0);
+	glBegin(GL_LINES);
+	glColor3ub(255, 255, 255);
+	glVertex2f(0.0, 0.0);
+	glVertex2f(0, 2);
+	glEnd();
+
+	glLineWidth(5.0);
+	glBegin(GL_LINES);
+	glColor3ub(255, 255, 255);
+	glVertex2f(0.0, 0.0);
+	glVertex2f(-2, 0.0);
+	glEnd();
+}
+
+void display()
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+	glColor3d(1, 1, 1);
+	glLoadIdentity(); //Reset the drawing perspective
+	glMatrixMode(GL_MODELVIEW);
+	gluOrtho2D(-15, 15, -15, 15);
+
+	glPushMatrix();
+
+	glPopMatrix();
+
+	glPushMatrix();
+
+	glRotatef(angle, 0.0f, 0.0f, 1.0f);
+	//front wheel
+	blades();
+	glPopMatrix();
+
+	glPushMatrix();
+
+	glRotatef(angle, 0.0f, 0.0f, 1.0f);
+	blades();
+	glPopMatrix();
+
+	//windmill body front
+
+	glBegin(GL_QUADS);
+	glColor3ub(255, 255, 255);
+	glVertex2f(0.2, 0);//H
+	glVertex2f(-0.2, 0);//E
+	glVertex2f(-0.5, -9);//F
+	glVertex2f(0.5, -9);//G
+	glEnd();
+
+	glutSwapBuffers();
+}
+
+void update(int value)
+{
+	angle -= 5.0f;
+	if (angle < 360.0)
+	{
+		angle += 360;
+	}
+	glutPostRedisplay(); //Notify GLUT that the display has changed
+
+	glutTimerFunc(20, update, 0); //Notify GLUT to call update again in 25 milliseconds
+}
+
+int main(int argc, char** argv)
+{
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+	glutInitWindowSize(900, 900);
+	glutCreateWindow("display");
+	glClearColor(0.0, 0.0, 0.0, 0.0);
+
+	glutDisplayFunc(display);
+
+	glutTimerFunc(20, update, 0); //Add a timer
+	glutMainLoop();
+	return 0;
+}
