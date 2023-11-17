@@ -26,36 +26,39 @@ void circle(float radius, float xc, float yc, float r, float g, float b)
 
 void blades()
 {
-	circle(2, 0, 0, 0, 0, 0);
-	circle(0.27, 0, 0, 255, 255, 255);
-
-	glLineWidth(7.0);
-	glBegin(GL_LINES);
+	glBegin(GL_QUADS);
 	glColor3ub(255, 255, 255);
-	glVertex2f(0.0, 0.0);
-	glVertex2f(2, 0);
+	glVertex2f(6, 0);//e
+	glVertex2f(5.5, 0.25);//h
+	glVertex2f(0, 0.38);//c
+	glVertex2f(0, -0.38);//d
 	glEnd();
 
-	glLineWidth(5.0);
-	glBegin(GL_LINES);
+	glBegin(GL_QUADS);
 	glColor3ub(255, 255, 255);
-	glVertex2f(0.0, 0.0);
-	glVertex2f(0, -2);
+	glVertex2f(0, 0.38);//c
+	glVertex2f(-6, 0);//k
+	glVertex2f(-5.5, -0.25);//l
+	glVertex2f(0, -0.38);//d
 	glEnd();
 
-	glLineWidth(5.0);
-	glBegin(GL_LINES);
+	glBegin(GL_QUADS);
 	glColor3ub(255, 255, 255);
-	glVertex2f(0.0, 0.0);
-	glVertex2f(0, 2);
+	glVertex2f(0, 6);//H
+	glVertex2f(-0.25, 5.5);//E
+	glVertex2f(-0.37, 0);//F
+	glVertex2f(0.37, 0);//G
 	glEnd();
 
-	glLineWidth(5.0);
-	glBegin(GL_LINES);
+	glBegin(GL_QUADS);
 	glColor3ub(255, 255, 255);
-	glVertex2f(0.0, 0.0);
-	glVertex2f(-2, 0.0);
+	glVertex2f(0, -6);//H
+	glVertex2f(-0.25, -5.5);//E
+	glVertex2f(-0.37, 0);//F
+	glVertex2f(0.37, 0);//G
 	glEnd();
+	//circle(2, 0, 0, 0, 0, 0);
+	circle(0.47, 0, 0, 209, 195, 182);
 }
 
 void display()
@@ -66,32 +69,29 @@ void display()
 	glMatrixMode(GL_MODELVIEW);
 	gluOrtho2D(-15, 15, -15, 15);
 
-	glPushMatrix();
-
-	glPopMatrix();
-
-	glPushMatrix();
-
-	glRotatef(angle, 0.0f, 0.0f, 1.0f);
-	//front wheel
-	blades();
-	glPopMatrix();
-
-	glPushMatrix();
-
-	glRotatef(angle, 0.0f, 0.0f, 1.0f);
-	blades();
-	glPopMatrix();
-
 	//windmill body front
 
 	glBegin(GL_QUADS);
-	glColor3ub(255, 255, 255);
+	glColor3ub(237, 228, 211);
 	glVertex2f(0.2, 0);//H
 	glVertex2f(-0.2, 0);//E
+	glColor3ub(254, 244, 223);
 	glVertex2f(-0.5, -9);//F
 	glVertex2f(0.5, -9);//G
 	glEnd();
+
+	glPushMatrix();
+
+	glRotatef(angle, 0.0f, 0.0f, 1.0f);
+
+	blades();
+	glPopMatrix();
+
+	glPushMatrix();
+
+	glRotatef(angle, 0.0f, 0.0f, 1.0f);
+	blades();
+	glPopMatrix();
 
 	glutSwapBuffers();
 }
